@@ -17,18 +17,10 @@ public class CoreDataFeedStore: FeedStore{
 		persistentContainer.newBackgroundContext()
 	}()
 	
-	public init(storeURL url: URL) {
+	public init(storeURL url: URL) throws{
 		self.persistentContainer = FeedCachePersistentContainer(name: dataModelName)
 		
-		let description = NSPersistentStoreDescription()
-		description.url = url
-		self.persistentContainer.persistentStoreDescriptions = [description]
-
-		self.persistentContainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
-			guard error == nil else{
-				return
-			}
-		})
+		try self.persistentContainer.loadPersistentStores(with: url)
 	}
 	
 	public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
@@ -41,5 +33,31 @@ public class CoreDataFeedStore: FeedStore{
 	
 	public func retrieve(completion: @escaping RetrievalCompletion) {
 		completion(.empty)
+	}
+}
+
+
+extension NSPersistentContainer{
+	
+	enum LoadError: Swift.Error {
+		case loadPersistentStoresFailed(Error)
+	}
+	
+	func loadPersistentStores(with storeURL:URL) throws {
+		let description = NSPersistentStoreDescription()
+		description.url = storeURL
+		self.persistentStoreDescriptions = [description]
+
+		var loadError: Swift.Error?
+		
+		self.loadPersistentStores(completionHandler: { (storeDescription, error) in
+			if error != nil {
+				loadError = error
+			}
+		})
+		
+		if let error = loadError {
+			throw LoadError.loadPersistentStoresFailed(error)
+		}
 	}
 }
