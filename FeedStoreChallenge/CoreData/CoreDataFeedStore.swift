@@ -26,7 +26,7 @@ public class CoreDataFeedStore: FeedStore{
 	public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
 		let request: NSFetchRequest<ManagedCache> = ManagedCache.fetchRequest()
 		
-		managedObjectContext.perform { [weak self] in
+		managedObjectContext.performAndWait { [weak self] in
 			guard let self = self else{return}
 			
 			do{
@@ -48,7 +48,7 @@ public class CoreDataFeedStore: FeedStore{
 		deleteCachedFeed { [weak self] (error) in
 			guard let self = self else {return}
 			
-			self.managedObjectContext.perform { [weak self] in
+			self.managedObjectContext.performAndWait { [weak self] in
 				guard let self = self else {return}
 				
 				let cache = ManagedCache(context: self.managedObjectContext)
