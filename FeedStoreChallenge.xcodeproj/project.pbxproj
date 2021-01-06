@@ -20,6 +20,7 @@
 		08CE2BB52285BEF100183A1B /* FeedStoreChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */; };
 		DA4BCB1E25A61E4E000B0A99 /* FeedCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB1C25A61E4E000B0A99 /* FeedCache.xcdatamodeld */; };
 		DA4BCB2325A6211D000B0A99 /* FeedCachePersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB2225A6211D000B0A99 /* FeedCachePersistentContainer.swift */; };
+		DA4BCB2C25A621F5000B0A99 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB2B25A621F5000B0A99 /* CoreDataFeedStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreChallengeTests.swift; sourceTree = "<group>"; };
 		DA4BCB1D25A61E4E000B0A99 /* FeedCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FeedCache.xcdatamodel; sourceTree = "<group>"; };
 		DA4BCB2225A6211D000B0A99 /* FeedCachePersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCachePersistentContainer.swift; sourceTree = "<group>"; };
+		DA4BCB2B25A621F5000B0A99 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 			children = (
 				DA4BCB1C25A61E4E000B0A99 /* FeedCache.xcdatamodeld */,
 				DA4BCB2225A6211D000B0A99 /* FeedCachePersistentContainer.swift */,
+				DA4BCB2B25A621F5000B0A99 /* CoreDataFeedStore.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA4BCB2C25A621F5000B0A99 /* CoreDataFeedStore.swift in Sources */,
 				08CE2BA62285BCB600183A1B /* FeedStore.swift in Sources */,
 				DA4BCB2325A6211D000B0A99 /* FeedCachePersistentContainer.swift in Sources */,
 				08CE2BA82285BCC600183A1B /* LocalFeedImage.swift in Sources */,
