@@ -33,15 +33,7 @@ public class CoreDataFeedStore: FeedStore{
 			
 			let cache = ManagedCache(context: self.managedObjectContext)
 			cache.timestamp = timestamp
-		
-			for item in feed {
-				let feedImage = ManagedFeedImage(context: self.managedObjectContext)
-				feedImage.id = item.id
-				feedImage.imageDescription = item.description
-				feedImage.imageLocation = item.location
-				feedImage.imageURL = item.url
-				cache.addToImages(feedImage)
-			}
+			cache.images = NSOrderedSet(array: feed.mapToManagedFeedImages(in: self.managedObjectContext))
 			
 			completion(nil)
 		}
@@ -52,23 +44,15 @@ public class CoreDataFeedStore: FeedStore{
 		
 		managedObjectContext.perform {
 			do{
-				let cache = try request.execute()
+				let caches = try request.execute()
 				
-				guard cache.count > 0 else{
+				guard caches.count > 0, let cache = caches.first else{
 					completion(.empty)
 					return
 				}
 				
-				guard let firstCache = cache.last, let images = firstCache.images?.array as? [ManagedFeedImage], let timestamp = firstCache.timestamp else {
-					completion(.failure(NSError(domain: "Error", code: 0)))
-					return
-				}
-				
-				let localFeedImages: [LocalFeedImage] = images.compactMap{
-					guard let id = $0.id, let url = $0.imageURL else {return nil}
-					return LocalFeedImage(id: id, description: $0.imageDescription, location: $0.imageLocation, url: url)
-				}
-				completion(.found(feed: localFeedImages, timestamp: timestamp))
+				let localCache = try cache.toLocal()
+				completion(.found(feed: localCache.feed, timestamp: localCache.timestamp))
 			}
 			catch{
 				completion(.failure(error))
@@ -78,27 +62,17 @@ public class CoreDataFeedStore: FeedStore{
 }
 
 
-extension NSPersistentContainer{
-	
-	enum LoadError: Swift.Error {
-		case loadPersistentStoresFailed(Error)
-	}
-	
-	func loadPersistentStores(with storeURL:URL) throws {
-		let description = NSPersistentStoreDescription()
-		description.url = storeURL
-		self.persistentStoreDescriptions = [description]
-
-		var loadError: Swift.Error?
-		
-		self.loadPersistentStores(completionHandler: { (storeDescription, error) in
-			if error != nil {
-				loadError = error
-			}
-		})
-		
-		if let error = loadError {
-			throw LoadError.loadPersistentStoresFailed(error)
+private extension Array where Element == LocalFeedImage {
+	func mapToManagedFeedImages(in context: NSManagedObjectContext) -> [ManagedFeedImage] {
+		return self.map { (localImage) -> ManagedFeedImage in
+			let managedFeedImage = ManagedFeedImage(context: context)
+			managedFeedImage.id = localImage.id
+			managedFeedImage.imageDescription = localImage.description
+			managedFeedImage.imageLocation = localImage.location
+			managedFeedImage.imageURL = localImage.url
+			return managedFeedImage
 		}
 	}
 }
+
+
