@@ -11,7 +11,25 @@ import CoreData
 
 public class CoreDataFeedStore: FeedStore{
 	
-	public init() {}
+	private let persistentContainer: FeedCachePersistentContainer
+	private let dataModelName = "FeedCache"
+	private lazy var managedObjectContext: NSManagedObjectContext = {
+		persistentContainer.newBackgroundContext()
+	}()
+	
+	public init(storeURL url: URL) {
+		self.persistentContainer = FeedCachePersistentContainer(name: dataModelName)
+		
+		let description = NSPersistentStoreDescription()
+		description.url = url
+		self.persistentContainer.persistentStoreDescriptions = [description]
+
+		self.persistentContainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
+			guard error == nil else{
+				return
+			}
+		})
+	}
 	
 	public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
 		
