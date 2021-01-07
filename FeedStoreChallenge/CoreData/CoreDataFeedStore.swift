@@ -25,17 +25,11 @@ public class CoreDataFeedStore: FeedStore{
 	
 	public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
 		
-		managedObjectContext.performAndWait { [weak self] in
-			guard let self = self else{return}
+		managedObjectContext.perform { [weak self] in
 			
 			do{
-				let request: NSFetchRequest<ManagedCache> = ManagedCache.fetchRequest()
-				let caches = try request.execute()
-				
-				for cache in caches{
-					self.managedObjectContext.delete(cache)
-				}
-				
+				guard let self = self else{return}
+				try self.cleanupCacheAction()
 				self.saveChanges(completion: completion)
 			}
 			catch{
@@ -45,17 +39,20 @@ public class CoreDataFeedStore: FeedStore{
 	}
 	
 	public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-		deleteCachedFeed { [weak self] (error) in
-			guard let self = self else {return}
-			
-			self.managedObjectContext.performAndWait { [weak self] in
+		self.managedObjectContext.perform { [weak self] in
+			do{
 				guard let self = self else {return}
+				
+				try self.cleanupCacheAction()
 				
 				let cache = ManagedCache(context: self.managedObjectContext)
 				cache.timestamp = timestamp
 				cache.images = NSOrderedSet(array: feed.mapToManagedFeedImages(in: self.managedObjectContext))
 				
 				self.saveChanges(completion: completion)
+			}
+			catch{
+				completion(error)
 			}
 		}
 	}
@@ -91,6 +88,15 @@ public class CoreDataFeedStore: FeedStore{
 			completion(nil)
 		} catch {
 			completion(error)
+		}
+	}
+	
+	private func cleanupCacheAction() throws{
+		let request: NSFetchRequest<ManagedCache> = ManagedCache.fetchRequest()
+		let caches = try request.execute()
+		
+		for cache in caches{
+			self.managedObjectContext.delete(cache)
 		}
 	}
 }
