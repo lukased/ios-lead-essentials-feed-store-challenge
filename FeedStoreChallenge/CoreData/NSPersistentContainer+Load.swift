@@ -23,9 +23,7 @@ extension NSPersistentContainer{
 		var loadError: Swift.Error?
 		
 		self.loadPersistentStores(completionHandler: { (storeDescription, error) in
-			if error != nil {
-				loadError = error
-			}
+			loadError = error
 		})
 		
 		if let error = loadError {
