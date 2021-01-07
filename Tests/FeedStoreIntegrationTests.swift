@@ -33,14 +33,14 @@ class FeedStoreIntegrationTests: XCTestCase {
 	}
 	
 	func test_retrieve_deliversFeedInsertedOnAnotherInstance() {
-		//        let storeToInsert = makeSUT()
-		//        let storeToLoad = makeSUT()
-		//        let feed = uniqueImageFeed()
-		//        let timestamp = Date()
-		//
-		//        insert((feed, timestamp), to: storeToInsert)
-		//
-		//        expect(storeToLoad, toRetrieve: .found(feed: feed, timestamp: timestamp))
+		let storeToInsert = makeSUT()
+		let storeToLoad = makeSUT()
+		let feed = uniqueImageFeed()
+		let timestamp = Date()
+
+		insert((feed, timestamp), to: storeToInsert)
+
+		expect(storeToLoad, toRetrieve: .found(feed: feed, timestamp: timestamp))
 	}
 	
 	func test_insert_overridesFeedInsertedOnAnotherInstance() {
@@ -78,11 +78,15 @@ class FeedStoreIntegrationTests: XCTestCase {
 	}
 	
 	private func setupEmptyStoreState() {
-		
+		deleteStoreArtifacts()
 	}
 	
 	private func undoStoreSideEffects() {
-		
+		deleteStoreArtifacts()
+	}
+	
+	private func deleteStoreArtifacts() {
+		try? FileManager.default.removeItem(at: testSpecificStoreURL())
 	}
 	
 	private func testSpecificStoreURL() -> URL {

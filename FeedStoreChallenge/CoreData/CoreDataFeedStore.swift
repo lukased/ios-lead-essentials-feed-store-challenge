@@ -36,7 +36,9 @@ public class CoreDataFeedStore: FeedStore{
 					self.managedObjectContext.delete(cache)
 				}
 				
-				completion(nil)
+				saveChanges { (error) in
+					completion(error)
+				}
 			}
 			catch{
 				completion(error)
@@ -55,7 +57,9 @@ public class CoreDataFeedStore: FeedStore{
 				cache.timestamp = timestamp
 				cache.images = NSOrderedSet(array: feed.mapToManagedFeedImages(in: self.managedObjectContext))
 				
-				completion(nil)
+				self.saveChanges { (error) in
+					completion(error)
+				}
 			}
 		}
 	}
@@ -78,6 +82,19 @@ public class CoreDataFeedStore: FeedStore{
 			catch{
 				completion(.failure(error))
 			}
+		}
+	}
+	
+	
+	private func saveChanges(completion: (Error?) ->()) {
+		guard managedObjectContext.hasChanges else {
+			completion(nil)
+			return }
+		do {
+			try managedObjectContext.save()
+			completion(nil)
+		} catch {
+			completion(error)
 		}
 	}
 }
