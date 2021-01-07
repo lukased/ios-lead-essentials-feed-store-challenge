@@ -23,6 +23,7 @@
 		DA4BCB2C25A621F5000B0A99 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB2B25A621F5000B0A99 /* CoreDataFeedStore.swift */; };
 		DA4BCB3025A6305B000B0A99 /* ManagedCache+LocalMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB2F25A6305B000B0A99 /* ManagedCache+LocalMapping.swift */; };
 		DA4BCB3425A63095000B0A99 /* NSPersistentContainer+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB3325A63095000B0A99 /* NSPersistentContainer+Load.swift */; };
+		DA4BCB4025A6E51C000B0A99 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4BCB3F25A6E51C000B0A99 /* XCTestCase+MemoryLeakTracking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		DA4BCB2B25A621F5000B0A99 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 		DA4BCB2F25A6305B000B0A99 /* ManagedCache+LocalMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedCache+LocalMapping.swift"; sourceTree = "<group>"; };
 		DA4BCB3325A63095000B0A99 /* NSPersistentContainer+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentContainer+Load.swift"; sourceTree = "<group>"; };
+		DA4BCB3F25A6E51C000B0A99 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 		08CE2B982285BBD100183A1B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				DA4BCB3E25A6E4FC000B0A99 /* Helpers */,
 				08CE2BA92285BCE700183A1B /* FeedStoreSpecs */,
 				08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */,
 				084BB13B24FE50A10091C705 /* FeedStoreIntegrationTests.swift */,
@@ -140,6 +143,14 @@
 				DA4BCB3325A63095000B0A99 /* NSPersistentContainer+Load.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		DA4BCB3E25A6E4FC000B0A99 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DA4BCB3F25A6E51C000B0A99 /* XCTestCase+MemoryLeakTracking.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +279,7 @@
 			files = (
 				08CE2BB22285BCE700183A1B /* XCTestCase+FailableDeleteFeedStoreSpecs.swift in Sources */,
 				08CE2BB02285BCE700183A1B /* FeedStoreSpecs.swift in Sources */,
+				DA4BCB4025A6E51C000B0A99 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 				084BB13C24FE50A10091C705 /* FeedStoreIntegrationTests.swift in Sources */,
 				08CE2BB12285BCE700183A1B /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift in Sources */,
 				08CE2BAF2285BCE700183A1B /* XCTestCase+FeedStoreSpecs.swift in Sources */,

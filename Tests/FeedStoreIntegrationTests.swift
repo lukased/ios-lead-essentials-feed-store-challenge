@@ -89,11 +89,4 @@ class FeedStoreIntegrationTests: XCTestCase {
 		return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("\(type(of: self)).store.sqlite")
 	}
 	
-	func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-		addTeardownBlock { [weak instance] in
-			XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
-		}
-	}
-
-	
 }
