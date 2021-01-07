@@ -27,7 +27,7 @@ class FeedStoreIntegrationTests: XCTestCase {
 	}
 	
 	func test_retrieve_deliversEmptyOnEmptyCache() {
-		//        let sut = makeSUT()
+		_ = makeSUT()
 		//
 		//        expect(sut, toRetrieve: .empty)
 	}
@@ -71,8 +71,10 @@ class FeedStoreIntegrationTests: XCTestCase {
 	
 	// - MARK: Helpers
 	
-	private func makeSUT() -> FeedStore {
-		fatalError("Must be implemented")
+	private func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
+		let sut = try! CoreDataFeedStore(storeURL: testSpecificStoreURL())
+		trackForMemoryLeaks(sut, file: file, line: line)
+		return sut
 	}
 	
 	private func setupEmptyStoreState() {
@@ -82,5 +84,16 @@ class FeedStoreIntegrationTests: XCTestCase {
 	private func undoStoreSideEffects() {
 		
 	}
+	
+	private func testSpecificStoreURL() -> URL {
+		return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("\(type(of: self)).store.sqlite")
+	}
+	
+	func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
+		addTeardownBlock { [weak instance] in
+			XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+		}
+	}
+
 	
 }
